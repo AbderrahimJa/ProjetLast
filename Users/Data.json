@@ -1,0 +1,180 @@
+{
+  "Users": [
+    {
+      "id": 1,
+      "email": "abderrahim@gmail.com",
+      "nom": "ABDERRAHIM",
+      "prenom": "JANBOUBI",
+      "phone": "0612345678",
+      "password": "password",
+      "image": "https://miro.medium.com/max/2400/1*mk1-6aYaf_Bes1E3Imhc0A.jpeg",
+      "type": "admin"
+    },
+    {
+      "id": 2,
+      "email": "abdelfattah@gmail.com",
+      "nom": "ABDELFATTAH",
+      "prenom": "HILMI",
+      "phone": "0687654321",
+      "password": "password",
+      "image": "hil.jpg",
+      "type": "ch_Labo"
+    },
+    {
+      "id": 3,
+      "email": "issam@gmail.com",
+      "nom": "ISSAM",
+      "prenom": "EL GOUBBAHI",
+      "phone": "0618273645",
+      "password": "password",
+      "image": "me1.jpg",
+      "type": "ch_Eq"
+    },
+    {
+      "id": 4,
+      "email": "prof@gmail.com",
+      "nom": "PROF",
+      "prenom": "EL PROF",
+      "phone": "0692836173",
+      "password": "password",
+      "image": "jan.jpg",
+      "type": "prof"
+    },
+    {
+      "Email": "Amin@gmail.com",
+      "name": "Amin",
+      "prenom": "Amini",
+      "phone": 689753241,
+      "passP": "Password",
+      "v": "https://miro.medium.com/max/2400/1*mk1-6aYaf_Bes1E3Imhc0A.jpeg",
+      "checked": "prof",
+      "id": 5
+    }
+  ],
+  "Labos": [
+    {
+      "id": 1,
+      "name": "LABO 1",
+      "Departement": "Info",
+      "id_chef_labo": 1,
+      "name_chef_labo": "Flan 1"
+    },
+    {
+      "id": 2,
+      "name": "LABO 2",
+      "Departement": "Math",
+      "id_chef_labo": 2,
+      "name_chef_labo": "ABDELFATTAH HILMI"
+    },
+    {
+      "id": 3,
+      "name": "LABO 3",
+      "Departement": "Biologie",
+      "id_chef_labo": 3,
+      "name_chef_labo": "Flan 2"
+    },
+    {
+      "id": 4,
+      "name": "LABO 4",
+      "Departement": "Physique",
+      "id_chef_labo": 4,
+      "name_chef_labo": "Flan 3"
+    },
+    {
+      "id": 5,
+      "name": "LABO 5",
+      "Departement": "Physique",
+      "id_chef_labo": 5,
+      "name_chef_labo": "Flan 3"
+    },
+    {
+      "id": 6,
+      "name": "LABO 6",
+      "Departement": "Physique",
+      "id_chef_labo": 6,
+      "name_chef_labo": "Flan 3"
+    }
+  ],
+  "Equipe": [
+    {
+      "id": 1,
+      "id_Labo": 2,
+      "Domain": "Big Data",
+      "name": "Team A",
+      "chef_Equipe": "issam",
+      "id_chef_Equipe": 3,
+      "Date_Creation": "3/12/2017",
+      "Equipe_Members": [
+        "issam",
+        "Prof_A2",
+        "Prof_A3",
+        "Prof_A4",
+        "Prof_A5"
+      ]
+    },
+    {
+      "id": 2,
+      "id_Labo": 2,
+      "Domain": "Security",
+      "name": "Team B",
+      "chef_Equipe": "Prof_B1",
+      "id_chef_Equipe": 5,
+      "Date_Creation": "7/2/2019",
+      "Equipe_Members": [
+        "Prof_B1",
+        "Prof_B2",
+        "Prof_B3",
+        "Prof_B4",
+        "Prof_B5"
+      ]
+    },
+    {
+      "id": 3,
+      "id_Labo": null,
+      "Domain": "Chimie",
+      "name": "Team C",
+      "chef_Equipe": "Prof_C1",
+      "id_chef_Equipe": 6,
+      "Date_Creation": "9/20/2012",
+      "Equipe_Members": [
+        "Prof_C1",
+        "Prof_C2",
+        "Prof_C3",
+        "Prof_C4",
+        "Prof_C5"
+      ]
+    },
+    {
+      "id": 4,
+      "id_Labo": 1,
+      "Domain": "Mecanique solide",
+      "name": "Team D",
+      "chef_Equipe": "Prof_D1",
+      "id_chef_Equipe": 7,
+      "Date_Creation": "1/1/2015",
+      "Equipe_Members": [
+        "Prof_D1",
+        "Prof_D2",
+        "Prof_D3",
+        "Prof_D4",
+        "Prof_D5"
+      ]
+    },
+    {
+      "id": 5,
+      "id_Labo": 3,
+      "Domain": "Mecanique solide",
+      "name": "Team E",
+      "chef_Equipe": "Prof_E1",
+      "id_chef_Equipe": 7,
+      "Date_Creation": "1/1/2015",
+      "Equipe_Members": [
+        "Prof_E1",
+        "Prof_E2",
+        "Prof_E3",
+        "Prof_E4",
+        "Prof_E5"
+      ]
+    }
+  ]
+}
