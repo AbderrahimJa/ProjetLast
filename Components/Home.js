@@ -1,49 +1,35 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ImageBackground } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import * as Animatable from 'react-native-animatable';
 import { NavigationContainer } from '@react-navigation/native';
 
 export default function Home({ navigation }){
-    const ChangeToSearch = () => {
-        // navigation.jumpTo('Search');
-        navigation.navigate('Search');
-    }
-    const ChangeToLog = () => {
-        navigation.navigate('Log in');
-    }
-
+    const ChangeToSearch = () => navigation.navigate('Search')
+    const ChangeToLog = () => navigation.navigate('Log in')
     return (
-        <ImageBackground
-            source={ require('../3132.jpg') }
-            style={Styles.imag}
-        >
-            <View style={Styles.home}>
-                <View style={Styles.title}>
-                    <View style={Styles.tit}>
-                        <Text style={Styles.textTit}>Ibn Zohr</Text>
-                    </View>
-                </View>
-                <View style={Styles.body}>
-                    <TouchableOpacity
-                        onPress={ ChangeToSearch }
-                    >
-                        <View style={Styles.oneThing}>
-                            <FontAwesome name="search" size={22} color="white"  style={Styles.icon}/>
-                            <Text style={Styles.text}>Rechercher</Text>
-                        </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        onPress={ ChangeToLog }
-                    >
-                        <View style={Styles.oneThing}>
-                            <MaterialCommunityIcons name="login" size={22} color="white" style={Styles.icon}/>
-                            <Text style={Styles.text}>Connexion</Text>
-                        </View>
-                    </TouchableOpacity>
+        <View style={Styles.home}>
+            <View style={Styles.title}>
+                <View style={Styles.tit}>
+                    <Text style={Styles.textTit}>Ibn Zohr</Text>
                 </View>
             </View>
-        </ImageBackground>
+            <View style={Styles.body}>
+                <TouchableOpacity onPress={ ChangeToSearch } >
+                    <Animatable.View style={Styles.oneThing} delay= {100} animation="slideInRight">
+                        <FontAwesome name="search" size={22} color="white"  style={Styles.icon}/>
+                        <Text style={Styles.text}>Rechercher</Text>
+                    </Animatable.View>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={ ChangeToLog } >
+                    <Animatable.View style={Styles.oneThing} delay= {100} animation="slideInLeft">
+                        <MaterialCommunityIcons name="login" size={22} color="white" style={Styles.icon}/>
+                        <Text style={Styles.text}>Connexion</Text>
+                    </Animatable.View>
+                </TouchableOpacity>
+            </View>
+        </View>
     );
 }
 
@@ -53,6 +39,7 @@ const Styles = StyleSheet.create({
         paddingVertical: 30,
         justifyContent: 'center',
         flexDirection: 'column',
+        backgroundColor: '#ffc288',
     },
     oneThing: {
         alignItems: 'center',
@@ -61,18 +48,19 @@ const Styles = StyleSheet.create({
         padding: 20,
         backgroundColor: '#ff6701',
         marginVertical: 20,
-        borderRadius: 33,
+        borderRadius: 30,
         flexDirection: 'row',
     },
     icon: {
-        marginHorizontal: 3,
+        marginLeft: "4%",
+        marginRight: "-5%",
         justifyContent: 'flex-start',
     },
     text: {
-        fontStyle: 'italic',
         fontSize: 19,
-        marginHorizontal: "23%",
+        marginHorizontal: "20%",
         color: 'white',
+        fontFamily: 'Regular403'
     },
     title: {
         flex: 1,

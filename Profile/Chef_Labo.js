@@ -1,134 +1,93 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, StyleSheet, TouchableOpacity, Image, ImageBackground } from 'react-native';
+import { Text, View, StyleSheet, TouchableOpacity, BackHandler, AsyncStorage } from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
 import { Avatar } from 'react-native-elements';
+import * as Animatable from 'react-native-animatable';
 import Elevations from 'react-native-elevation';
 import AwesomeAlert from 'react-native-awesome-alerts';
 
 export default function Chef_Labo({ route , navigation }){
-    const [DarkMode, setDarkMode] = useState(true);
     const [Alerting, setAlerting] = useState(false);
-    const { id, email, nom, prenom, password, imagi, type } = route.params;
+    const remov = async() => {
+        try{
+            AsyncStorage.removeItem('refresh');
+            AsyncStorage.removeItem('access');
+        }catch(error){   console.error(error); }
+    }
+    const [idOfLabo, setidOfLabo] = useState([]);
+    const { id, first_name, last_name, type , team } = route.params;
     useEffect( () => {
-    }, []);
+        fetch('http://34.77.153.247:8000/api/Teams/'+route.params.team)
+        .then((response) => response.json())
+        .then((json) => setidOfLabo(json))
+        .then( () => setpanding(false))
+        .catch( (error) => console.error(error));
+        // BackHandler.addEventListener("hardwareBackPress", function(){ return true;} );
+        // return () => BackHandler.removeEventListener("hardwareBackPress", function(){ return true; } );
+    }, []);    
     return(
-        // <View style={Styles.Body}>
-        //     <View style={Styles.Body2}>
-        //     </View>
-        // </View>
-        // <ImageBackground
-        //     source={ 
-        //         DarkMode ? require('../bgBaj.jpg') : require('../bgDark3.jpg')
-        //     }
-        //     style={Styles.imag}
-        // >
-        <View style={{backgroundColor:( DarkMode ? '#F1EADF' : '#3F3F3A' ), flex: 1}}>
-        {/* <View style={{backgroundColor:( DarkMode ? 'white' : 'black' ), flex: 1, marginTop:"7%"}}> */}
-            <View style={Styles.ViewChang}>
-                { DarkMode ?
-                    <Feather
-                        name="moon"
-                        size={28}
-                        color="black"
-                        onPress={ () => {
-                            setDarkMode(!DarkMode)
-                        }}
-                    />
-                    :
-                    <Feather
-                        name="sun"
-                        size={28}
-                        color="white"
-                        onPress={ () => {
-                            setDarkMode(!DarkMode)
-                        }}
-                    />
-                }
-            </View>
-            <View style={[Styles.img,{backgroundColor: DarkMode? '#DAD7D4' : '#3F4042'}]}>
+        <Animatable.View style={{backgroundColor: '#fcecdd', flex: 1, paddingTop: '8%', paddingBottom: '5%'}} delay={300} animation="fadeInDown" >
+            <View style={Styles.img} >
                 <Avatar
                     rounded
                     size="xlarge"
-                    source={ require('../Users/jan.jpg')}
-                    containerStyle ={{ marginHorizontal: '10%'}}
+                    source={ require('../profile1.png')}
+                    // source={{uri:image}}
+                    containerStyle ={{ alignSelf: 'center'}}
                 >
-                    <Avatar.Accessory
-                        size={26}
-                        style={{backgroundColor:'silver',}}
-                        onLongPress={ () => console.log('h')}
-                    />
                 </Avatar>
-                <Text style={Styles.Title}>{nom+" "+prenom}</Text>
-                <Text style={[Styles.Title,{color: '#FF5105', fontSize: 20,}]}>{type}</Text>
+                <Text style={Styles.Title}>{first_name+" "+last_name}</Text>
+                <Text style={[Styles.Title,{marginBottom: '1%'}]}>Chef de labo</Text>
             </View>
-            <View style={Styles.elem}>
-                <View style={{height: 90, marginVertical: -14,marginTop: 3,}}>
-                <TouchableOpacity style={[Styles.elem1, {backgroundColor:( DarkMode ? '#F9F8F2' : '#504F4D' )}]} onPress={ () => navigation.navigate('profile',{id: id})}>
+            <View style={Styles.elem} >
+                <View style={{minHeight: '14%', maxHeight: '28%', marginVertical: "-2.5%", marginTop: '1.5%',}}>
+                <TouchableOpacity style={[Styles.elem1, {backgroundColor: '#F9F8F2' }]} onPress={ () => navigation.navigate('profile',{ screen: 'Mes infos' , params: {id: id}})}>
                     <View style={{justifyContent: 'flex-start', flexDirection: 'row'}}>
-                    <Avatar
-                        size="medium"
-                        icon={{name: 'user', color:( DarkMode ? 'black' : 'white' ), type: 'font-awesome'}}
-                        containerStyle={{ marginTop: "-10%"}}
-                    />
-                    <Text
-                        style={[ Styles.text , {color:( DarkMode ? 'black' : 'white' )} ]}
-                    >Profile</Text>
+                        <Avatar
+                            size="medium"
+                            icon={{name: 'user', color: '#ff6701', type: 'font-awesome'}}
+                            containerStyle={{ marginTop: "-10%"}}
+                        />
+                        <Text style={[ Styles.text , {color: '#ff6701'} ]}>Profile</Text>
                     </View>
-                    <Feather
-                        style={ {color:( DarkMode ? 'black' : 'white' )}}
-                        name="chevron-right"
-                        size={22}
-                    />
+                    <Feather style={ {color: '#ff6701'}} name="chevron-right" size={22} />
                 </TouchableOpacity>
                 </View>
-                <View style={{height: 90, marginVertical: -7, marginTop: 3,}}>
-                <TouchableOpacity style={[Styles.elem1, {backgroundColor:( DarkMode ? '#F9F8F2' : '#504F4D' )}]} onPress={ () => navigation.navigate('monLabo', {id: id})} >
+                <View style={{minHeight: '14%', maxHeight: '28%', marginVertical: "-2.5%",}}>
+                <TouchableOpacity style={[Styles.elem1, {backgroundColor: '#F9F8F2' }]} onPress={ () => navigation.navigate('monLabo', {id: idOfLabo.Lab})} >
                     <View style={{justifyContent: 'flex-start', flexDirection: 'row'}}>
-                    <Avatar
-                        size="medium"
-                        icon={{name: 'lab-flask', color:( DarkMode ? 'black' : 'white' ), type: 'entypo'}}
-                        containerStyle={{ marginTop: "-6%",}}
-                    />
-                    <Text
-                        style={[ Styles.text , {color:( DarkMode ? 'black' : 'white' )} ]}
-                    >Mon labo</Text>
+                        <Avatar
+                            size="medium"
+                            icon={{name: 'lab-flask', color: '#ff6701', type: 'entypo'}}
+                            containerStyle={{ marginTop: "-6%",}}
+                        />
+                        <Text style={[ Styles.text , {color: '#ff6701'} ]}>Mon labo</Text>
                     </View>
-                    <Feather
-                        style={ {color:( DarkMode ? 'black' : 'white' )}}
-                        name="chevron-right"
-                        size={22}
-                    />
+                    <Feather style={ {color: '#ff6701'}} name="chevron-right" size={22} />
                 </TouchableOpacity>
                 </View>
-                <View style={{height: 90, marginVertical: -7,}}>
-                <TouchableOpacity style={[Styles.elem1, {backgroundColor:( DarkMode ? '#F9F8F2' : '#504F4D' )}]} onPress={ () => navigation.navigate('Gestion_Comptes', {type: type})}>
+                <View style={{minHeight: '14%', maxHeight: '28%', marginVertical: "-2.5%",}}>
+                {/* <TouchableOpacity style={[Styles.elem1, {backgroundColor: '#F9F8F2' }]} onPress={ () => navigation.navigate('Gestion_Comptes', {type: type})}> */}
+                <TouchableOpacity style={[Styles.elem1, {backgroundColor: '#F9F8F2' }]} onPress={ () => { navigation.navigate('Gestion_Comptes', {type: type, id: idOfLabo.Lab}) }}>
                     <View style={{justifyContent: 'flex-start', flexDirection: 'row'}}>
-                    <Avatar
-                        size="medium"
-                        icon={{name: 'user-cog', color:( DarkMode ? 'black' : 'white' ), type: 'font-awesome-5'}}
-                        containerStyle={{ marginTop: "-5%"}}
-                    />
-                    <Text
-                        style={[ Styles.text , {color:( DarkMode ? 'black' : 'white' )} ]}
-                    >Gestion des comptes</Text>
+                        <Avatar
+                            size="medium"
+                            icon={{name: 'user-cog', color: '#ff6701', type: 'font-awesome-5'}}
+                            containerStyle={{ marginTop: "-5%"}}
+                        />
+                        <Text style={[ Styles.text , {color: '#ff6701'} ]}>Gestion des comptes</Text>
                     </View>
-                    <Feather
-                        style={ {color:( DarkMode ? 'black' : 'white' )}}
-                        name="chevron-right"
-                        size={22}
-                    />
+                    <Feather style={ {color: '#ff6701', marginTop: "1%"}} name="chevron-right" size={22} />
                 </TouchableOpacity>
                 </View>
-                <View style={{height: 90, marginVertical: -7, marginBottom: 3}}>
-                <TouchableOpacity style={[Styles.elem1, {justifyContent: 'flex-start',backgroundColor:( DarkMode ? '#F9F8F2' : '#504F4D' )}]} onPress={ () => setAlerting(true) }>
+                <View style={{minHeight: '14%', maxHeight: '28%', marginTop: "-2.5%"}}>
+                <TouchableOpacity style={[Styles.elem1, {justifyContent: 'flex-start',backgroundColor: '#F9F8F2' }]} onPress={ () => setAlerting(true) }>
                     <Avatar
                         size="medium"
-                        icon={{name: 'sign-out', color:( DarkMode ? 'black' : 'white' ), type: 'font-awesome'}}
-                        containerStyle={{ marginTop: "-5%" }}
+                        icon={{name: 'sign-out', color: '#ff6701', type: 'font-awesome'}}
+                        containerStyle={{ marginTop: "-3%" }}
                     />
-                    <Text
-                        style={[ Styles.text , {color:( DarkMode ? 'black' : 'white' )} ]}
-                    >Log out</Text>
+                    <Text style={Styles.text}>Déconnexion</Text>
                 </TouchableOpacity>
                 <AwesomeAlert
                     show={Alerting}
@@ -144,85 +103,75 @@ export default function Chef_Labo({ route , navigation }){
                     cancelText="No"
                     confirmText="Oui"
                     confirmButtonColor="#DD6B55"
+                    contentContainerStyle={{backgroundColor: '#fcecdd'}}
+                    titleStyle={{ fontFamily: 'Regular404'}}
+                    messageStyle={{ fontFamily: 'Regular403' }}
                     onCancelPressed={() => {
                         setAlerting(false);
                     }}
                     onConfirmPressed={() => {
                         setAlerting(false);
                         navigation.goBack();
+                        // navigation.jumpTo('Home',{screen:'Log in'});
+                        remov();
                     }}
                 />
                 </View>
             </View>
-        </View>
-        /* </ImageBackground> */
+        </Animatable.View>
     );
 }
 
 const Styles = StyleSheet.create({
-    ViewChang: {
-        marginTop: "10%",
-        marginLeft: "88%",
-    },
-    Body: {
-        flex: 1,
-        backgroundColor: '#ff6701',
-    },
-    Body2: {
-        flex: 1,
-        marginTop: "40%",
-        borderTopStartRadius: 50,
-        borderTopEndRadius: 50,
-        backgroundColor: 'white',
-    },    
-    elem1: {
-        borderRadius: 10,
-        width: "85%",
-        marginVertical: "5%",
-        paddingVertical: "3.5%",
-        marginHorizontal: "7.5%",
-        paddingHorizontal: "4%",
-        paddingLeft: "3%",
-        flex: 1,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        ...Elevations[4]
-    },
     elem: {
         borderRadius: 10,
         flex: 1,
+        maxHeight: 350,
         flexDirection: 'column',
-        marginTop: "0%",
-        marginHorizontal: 12,
-        marginBottom: "4%",
+        marginTop: "1%",
+        textAlign: 'center',
+        marginHorizontal: "4%",
+        marginBottom: "0%",
         ...Elevations[6],
+        backgroundColor: '#ffc288',
+    },
+    text: {
+        marginLeft: '-2%',
+        fontSize: 18,
+        color: '#ff6701',
+    },
+    elem1: {
+        borderRadius: 10,
+        width: 315,
+        marginVertical: "3.9%",
+        paddingVertical: "3.8%",
+        paddingHorizontal: "4%",
+        paddingLeft: "0.5%",
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        ...Elevations[10],
+        backgroundColor: '#fcecdd',
+        alignSelf: 'center'
     },
     img: {
-        backgroundColor: "#DAD7D4",
-        marginTop: "-12%",
-        width: '68%',
-        borderRadius: 5,
-        paddingHorizontal: '10%',
-        paddingVertical: '2.5%',
-        marginBottom: '6%',
+        marginBottom: '4%',
         marginHorizontal: "16%",
         ...Elevations[10],
-    },
-    imag: {
-        flex: 1,
-        resizeMode: "cover",
-        justifyContent: "center",
+        backgroundColor: "#ffc288",
+        marginTop: "2%",
+        width: '70%',
+        borderRadius: 20,
+        paddingVertical: '3%',
+        alignSelf: 'center'
     },
     Title: {
         marginTop: "6%",
         textAlign: 'center',
-        fontSize: 17,
+        fontSize: 18,
         fontWeight: 'bold',
         marginHorizontal: 0,
         color: '#ff6701',
-    },
-    text: {
-        fontSize: 18,
+        fontFamily: 'Regular400'
     }
-
 })

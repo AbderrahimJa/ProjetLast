@@ -1,119 +1,79 @@
-import React, { useState } from 'react';
-import { Text, View, StyleSheet, TouchableOpacity, Image, ImageBackground } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { Text, View, StyleSheet, TouchableOpacity, BackHandler, Image, ImageBackground, AsyncStorage } from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
 import { Avatar } from 'react-native-elements';
 import Elevations from 'react-native-elevation';
 import AwesomeAlert from 'react-native-awesome-alerts';
 
 export default function Prof({ route , navigation }){
-    const [DarkMode, setDarkMode] = useState(true);
     const [Alerting, setAlerting] = useState(false);
-    const { id, email, username, nikname, password, imagi, type } = route.params;
+    const remov = async() => {
+        try{
+            AsyncStorage.removeItem('refresh');
+            AsyncStorage.removeItem('access');
+        }catch(error){   console.error(error); }
+    }
+    const { id, first_name, last_name, type } = route.params;
+    useEffect(() => {
+        // BackHandler.addEventListener("hardwareBackPress", function(){ return true;} );
+        // return () => BackHandler.removeEventListener("hardwareBackPress", function(){ return true; } );
+    }, [])
     return(
-        // <View style={Styles.Body}>
-        //     <View style={Styles.Body2}>
-        //     </View>
-        // </View>
-        // <ImageBackground
-        //     source={ 
-        //         DarkMode ? require('../bgBaj.jpg') : require('../bgDark3.jpg')
-        //     }
-        //     style={Styles.imag}
-        // >
-        <View style={{backgroundColor:( DarkMode ? '#F1EADF' : '#3F3F3A' ), flex: 1}}>
-        {/* <View style={{backgroundColor:( DarkMode ? 'white' : 'black' ), flex: 1, marginTop:"7%"}}> */}
-        <View style={Styles.ViewChang}>
-                { DarkMode ?
-                    <Feather
-                        name="moon"
-                        size={28}
-                        color="black"
-                        onPress={ () => {
-                            setDarkMode(!DarkMode)
-                        }}
-                    />
-                    :
-                    <Feather
-                        name="sun"
-                        size={28}
-                        color="white"
-                        onPress={ () => {
-                            setDarkMode(!DarkMode)
-                        }}
-                    />
-                }
-            </View>
-            <View style={[Styles.img,{backgroundColor: DarkMode? '#DAD7D4' : '#3F4042'}]}>
+        <View style={{backgroundColor:'#fcecdd', flex: 1}}>
+            <View style={Styles.img}>
                 <Avatar
                     rounded
                     size="xlarge"
-                    source={ require('../Users/jan.jpg')}
-                    containerStyle ={{ marginHorizontal: '10%'}}
+                    // source={{uri:image}}
+                    source={ require('../profile1.png')}
+                    containerStyle ={{ alignSelf: 'center'}}
                 >
-                    <Avatar.Accessory
-                        size={26}
-                        color='black'
-                        style={{backgroundColor:'silver',}}
-                        onLongPress={ () => console.log('h')}
-                    />
                 </Avatar>
-                <Text style={Styles.Title}>{username+" "+nikname}</Text>
-                <Text style={[Styles.Title,{color: '#FF5105', fontSize: 20,}]}>{type}</Text>
+                <Text style={Styles.Title}>{first_name+" "+last_name}</Text>
+                <Text style={Styles.Title}>Professeur</Text>
             </View>
             <View style={Styles.elem}>
-                <View style={{height: 90, marginTop: "20%"}}>
-                <TouchableOpacity style={[Styles.elem1, {backgroundColor:( DarkMode ? '#F9F8F2' : '#504F4D' )}]} onPress={ () => navigation.navigate('profile',{id: id})}>
-                    <View style={{justifyContent: 'flex-start', flexDirection: 'row'}}>
-                    <Avatar
-                        size="medium"
-                        icon={{name: 'user', color:( DarkMode ? 'black' : 'white' ), type: 'font-awesome'}}
-                        containerStyle={{ marginTop: "-10%"}}
-                    />
-                    <Text
-                        style={[ Styles.text , {color:( DarkMode ? 'black' : 'white' )} ]}
-                    >Profile</Text>
-                    </View>
-                    <Feather
-                        style={ {color:( DarkMode ? 'black' : 'white' )}}
-                        name="chevron-right"
-                        size={22}
-                    />
-                </TouchableOpacity>
+                <View style={{minHeight: '15%', maxHeight: '38%', marginVertical: "-2.5%", marginTop: '1.5%',}}>
+                    <TouchableOpacity style={[Styles.elem1, {backgroundColor:'#F9F8F2'}]} onPress={ () => navigation.navigate('profile',{ screen: 'Mes infos' , params: {id: id}})}>
+                        <View style={{justifyContent: 'flex-start', flexDirection: 'row'}}>
+                        <Avatar size="medium" icon={{name: 'user', color:'#ff6701', type: 'font-awesome'}} containerStyle={{ marginTop: "-10%"}} />
+                        <Text style={Styles.text} >Profile</Text>
+                        </View>
+                        <Feather style={ {color:'#ff6701'}} name="chevron-right" size={22} />
+                    </TouchableOpacity>
                 </View>
-                <View style={{height: 90, marginBottom: '0%'}}>
-                <TouchableOpacity style={[Styles.elem1, {justifyContent: 'flex-start', backgroundColor:( DarkMode ? '#F9F8F2' : '#504F4D' )}]} onPress={ () => setAlerting(true) } >
-
-                    <Avatar
-                        size="medium"
-                        icon={{name: 'sign-out', color:( DarkMode ? 'black' : 'white' ), type: 'font-awesome'}}
-                        containerStyle={{ marginTop: "-6%" }}
+                <View style={{minHeight: '15%', maxHeight: '38%', marginVertical: "-2.5%", marginBottom: 3,}}>
+                    <TouchableOpacity style={[Styles.elem1, {justifyContent: 'flex-start', backgroundColor:'#F9F8F2'}]} onPress={ () => setAlerting(true) } >
+                        <Avatar
+                            size="medium"
+                            icon={{name: 'sign-out', color:'#ff6701', type: 'font-awesome'}}
+                            containerStyle={{ marginTop: "-4%" }}
+                        />
+                        <Text style={Styles.text}>Déconnexion</Text>
+                    </TouchableOpacity>
+                    <AwesomeAlert
+                        show={Alerting}
+                        showProgress={false}
+                        progressColor="#DD6B55"
+                        progressSize={50}
+                        title="Déconnexion"
+                        message="Êtes-vous sûr de vouloir vous déconnecter ?"
+                        closeOnTouchOutside={false}
+                        closeOnHardwareBackPress={false}
+                        showCancelButton={true}
+                        showConfirmButton={true}
+                        cancelText="No"
+                        confirmText="Oui"
+                        confirmButtonColor="#DD6B55"
+                        onCancelPressed={() => {
+                            setAlerting(false);
+                        }}
+                        onConfirmPressed={() => {
+                            setAlerting(false);
+                            navigation.goBack();
+                            remov();
+                        }}
                     />
-                    <Text
-                        style={[ Styles.text , {color:( DarkMode ? 'black' : 'white' )} ]}
-                    >Log out</Text>
-                </TouchableOpacity>
-                <AwesomeAlert
-                    show={Alerting}
-                    showProgress={false}
-                    progressColor="#DD6B55"
-                    progressSize={50}
-                    title="Déconnexion"
-                    message="Êtes-vous sûr de vouloir vous déconnecter ?"
-                    closeOnTouchOutside={false}
-                    closeOnHardwareBackPress={false}
-                    showCancelButton={true}
-                    showConfirmButton={true}
-                    cancelText="No"
-                    confirmText="Oui"
-                    confirmButtonColor="#DD6B55"
-                    onCancelPressed={() => {
-                        setAlerting(false);
-                    }}
-                    onConfirmPressed={() => {
-                        setAlerting(false);
-                        navigation.goBack();
-                    }}
-                />
                 </View>
             </View>
         </View>
@@ -122,69 +82,80 @@ export default function Prof({ route , navigation }){
 }
 
 const Styles = StyleSheet.create({
-    ViewChang: {
-        marginTop: "10%",
-        marginLeft: "85%",
-    },
-    Body: {
-        flex: 1,
-        backgroundColor: '#ff6701',
-    },
-    Body2: {
-        flex: 1,
-        marginTop: "40%",
-        borderTopStartRadius: 50,
-        borderTopEndRadius: 50,
-        backgroundColor: 'white',
-    },
     elem: {
         borderRadius: 10,
-        flex: 1,
+        flex: 0.8,
         flexDirection: 'column',
-        marginTop: "0%",
-        marginHorizontal: 12,
+        marginTop: "1%",
+        textAlign: 'center',
+        marginHorizontal: "3%",
         marginBottom: "4%",
+        // paddingHorizontal: '0%',
         ...Elevations[6],
+        backgroundColor: '#ffc288',
     },
     elem1: {
-        borderRadius: 25,
-        width: "85%",
+        borderRadius: 10,
+        width: "86%",
         marginVertical: "5%",
         paddingVertical: "3.5%",
-        marginHorizontal: "7.5%",
         paddingHorizontal: "4%",
-        paddingLeft: "3%",
+        paddingLeft: "0.5%",
         flex: 1,
         flexDirection: 'row',
         justifyContent: 'space-between',
-        ...Elevations[4]
-    },
-    img: {
-        backgroundColor: "#DAD7D4",
-        marginTop: "-12%",
-        width: '68%',
-        borderRadius: 5,
-        paddingHorizontal: '10%',
-        paddingVertical: '2.5%',
-        marginBottom: '4%',
-        marginHorizontal: "16%",
         ...Elevations[10],
+        backgroundColor: '#fcecdd',
+        alignSelf: 'center'
     },
-    imag: {
-        flex: 1,
-        resizeMode: "cover",
-        justifyContent: "center",
+    // elem: {
+    //     borderRadius: 10,
+    //     flex: 1,
+    //     flexDirection: 'column',
+    //     marginTop: "1%",
+    //     textAlign: 'center',
+    //     marginHorizontal: "4%",
+    //     marginBottom: "0%",
+    //     // paddingHorizontal: '0%',
+    //     ...Elevations[6],
+    //     backgroundColor: '#ffc288',
+    // },
+    // elem1: {
+    //     borderRadius: 10,
+    //     width: 310,
+    //     marginVertical: "3.9%",
+    //     paddingVertical: "3.8%",
+    //     paddingHorizontal: "4%",
+    //     paddingLeft: "0.5%",
+    //     flex: 1,
+    //     flexDirection: 'row',
+    //     justifyContent: 'space-between',
+    //     ...Elevations[10],
+    //     backgroundColor: '#fcecdd',
+    //     alignSelf: 'center'
+    // },
+    img: {
+        backgroundColor: "#ffc288",
+        marginTop: "8%",
+        width: '70%',
+        borderRadius: 10,
+        paddingVertical: '4%',
+        marginBottom: '6%',
+        ...Elevations[10],
+        alignSelf: 'center'
     },
     Title: {
         marginTop: "6%",
         textAlign: 'center',
-        fontSize: 17,
+        fontSize: 18,
         fontWeight: 'bold',
         marginHorizontal: 0,
         color: '#ff6701',
+        fontFamily: 'Regular400'
     },
     text: {
+        marginLeft: '-2%',
         fontSize: 18,
+        color: '#ff6701',
     }
-
 })

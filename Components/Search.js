@@ -1,29 +1,27 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, ImageBackground, FlatList, TextInput, TouchableOpacity, TouchableWithoutFeedback, Keyboard, RefreshControl } from 'react-native';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, TouchableWithoutFeedback, Keyboard, RefreshControl } from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
 import ModalDropdown from 'react-native-modal-dropdown';
 import * as Animatable from 'react-native-animatable';
+import { Avatar, Divider } from 'react-native-elements';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import Elevations from 'react-native-elevation';
 
 const wait = (timeout) => {
     return new Promise(resolve => setTimeout(resolve, timeout));
 }
 
 export default function Search( { navigation } ){
-    const [dataUser, setdataUser] = useState([]);
-    const [dataEquipe, setdataEquipe] = useState([]);
-    const [dataLabo, setdataLabo] = useState([]);
-    const [ SearUser, setSearUser ] = useState([]);
-    const [ SearEquipe, setSearEquipe ] = useState([]);
-    const [ SearLabo, setSearLabo ] = useState([]);
-    const [ val , setVal ] = useState('');
-    const [refreshing, setRefreshing] = useState(false);
+    const [dataUser, setdataUser] = useState([]);           const [dataEquipe, setdataEquipe] = useState([]);
+    const [dataLabo, setdataLabo] = useState([]);           const [ SearUser, setSearUser ] = useState([]);
+    const [ SearEquipe, setSearEquipe ] = useState([]);     const [ SearLabo, setSearLabo ] = useState([]);
+    const [refreshing, setRefreshing] = useState(false);    const [panding1, setpanding1] = useState(true);
+    const [panding2, setpanding2] = useState(true);         const [panding3, setpanding3] = useState(true);
+    const onRefresh = React.useCallback(() => { setRefreshing(true); wait(2000).then(() => setRefreshing(false)); functionOfFetching(); }, []);
+    // const [ Val , setVal ] = useState('');
+    // let val = '' ;
     const [Filtring, setFiltring] = useState('Tous');
-    const onRefresh = React.useCallback(() => {
-        setRefreshing(true);
-        wait(2000).then(() => setRefreshing(false));
-        functionOfFetching();
-    }, []);
+    // let Filtring = 'Tous';
     const Searching = () => {
         setSearEquipe([]);      setSearLabo([]);    setSearUser([]);
         if( val != '' ){
@@ -47,7 +45,7 @@ export default function Search( { navigation } ){
                     setSearUser(dataUser);
                 }else{
                     for( let i = 0 ; i < dataUser.length ; i++ ){
-                        let sh = dataUser[i].nom.toUpperCase() ;
+                        let sh = dataUser[i].first_name.toUpperCase() ;
                         if( sh.includes(ch)){
                             setSearUser((Last) => {
                                 return [dataUser[i], ...Last];
@@ -73,51 +71,71 @@ export default function Search( { navigation } ){
         }
     }
     const functionOfFetching = () => {
-        fetch('https://massive-monkey-9.loca.lt/Users')
+        fetch('http://34.77.153.247:8000/api/Users/')
         .then((response) => response.json())
-        .then((json) => setdataUser(json))
+        .then( (data) => setdataUser(data))
+        .then( () => setpanding1(false))
         .catch((error) => console.error(error));
-        fetch('https://massive-monkey-9.loca.lt/Labos')
+        fetch('http://34.77.153.247:8000/api/Labs/')
         .then((response) => response.json())
-        .then((json) => setdataLabo(json))
+        .then( (data) => setdataLabo(data))
+        .then( () => setpanding2(false))
         .catch((error) => console.error(error));
-        fetch('https://massive-monkey-9.loca.lt/Equipe')
+        fetch('http://34.77.153.247:8000/api/Teams/')
         .then((response) => response.json())
-        .then((json) => setdataEquipe(json))
+        .then( (data) => setdataEquipe(data))
+        .then( () => setpanding3(false))
         .catch((error) => console.error(error));
     }
     useEffect( () => {
         functionOfFetching();
     }, []);
+    const [val, setVal] = useState('');
     return (
         <TouchableWithoutFeedback onPress={ () => Keyboard.dismiss() } >
-            <ImageBackground source={ require('../3132.jpg') } style={Styles.imag} >
+            <View style={Styles.body}>
                     <Animatable.View delay= {100} animation="slideInRight" style={{marginBottom: 10}}>
                         <View style={Styles.SearchSpace}>
+                            <View style={{ marginLeft: '3%'}}>
                             <TouchableOpacity>
-                                <Feather name="search" size= {30} color= '#ff6701' style={Styles.icon} onPress={ Searching } />
+                                <Feather name="search" size= {30} color= '#ff6701' style={Styles.icon} onPress={ () => Searching() } />
                             </TouchableOpacity>
+                            </View>
                             <TextInput 
                                 placeholder="Search"    placeholderTextColor="#666666"  style={Styles.textInput}
-                                autoCapitalize="none"   value={val}     onChangeText={ val => setVal(val) }
+                                autoCapitalize="none"   value={val}     
+                                onChangeText={ Val =>{ 
+                                    // setVal(val);
+                                    setVal(Val);
+                                    // val = Val;
+                                    // setTimeout(() => {
+                                        Searching() ;
+                                    // }, 3000);
+                                }}
                             />
-                            { val!=''? 
+                            { val!='' &&
                                 <Feather
                                     name="delete"   size= {30}  color= '#ff6701'    style={Styles.icon}
-                                    onPress={ () => { setVal(''), setSearLabo([]), setSearUser([]), setSearEquipe([]) }}
+                                    onPress={ () => { 
+                                        // setVal(''), 
+                                        setVal('');
+                                        // val = '';
+                                        setSearLabo([]); setSearUser([]); setSearEquipe([]); }}
                                 />
-                                :
-                                true
                             }
                         </View>
                         <ModalDropdown
                             options={['Tous', 'Comptes', 'Labos', 'Equipes']}       dropdownTextStyle={{fontSize: 16}}
-                            style={{backgroundColor: 'grey', width: '25%', alignItems:'center', paddingVertical: 4, borderRadius: 3, marginLeft: 10, marginTop: -28}}
-                            textStyle={{fontSize: 16, fontWeight: 'bold', fontStyle: 'italic'}}     dropdownTextHighlightStyle={{color: 'red'}}
+                            style={{backgroundColor: '#fcecdd', width: '25%', alignItems:'center', paddingVertical: 4, borderRadius: 3, marginRight: "6%", alignSelf: 'flex-end'}}
+                            textStyle={{fontSize: 16, fontWeight: 'bold', fontStyle: 'italic', color: '#ff6701', padding: '2%'}}     dropdownTextHighlightStyle={{color: '#ff6701'}}
                             defaultIndex={0}        defaultValue='Tous'
                             onSelect={(itemIndex, itemValue) =>{
-                                console.log(itemValue),
-                                setFiltring(itemValue)
+                                console.log(itemValue);
+                                setFiltring(itemValue);
+                                // Filtring = itemValue;  
+                                // setTimeout(() => {
+                                Searching();
+                                // }, 1000);
                                 // Searching()
                             }}
                             accessible={true}       dropdownStyle={{height: 168.5, marginTop: -20, marginLeft: -13 }}
@@ -125,46 +143,45 @@ export default function Search( { navigation } ){
                     </Animatable.View>
                     <KeyboardAwareScrollView refreshControl={ <RefreshControl refreshing={refreshing} onRefresh={onRefresh} /> } >
                     <View style={Styles.search}>
-                        <FlatList
-                            data={SearEquipe}
-                            renderItem={( {item} ) =>
-                                <Animatable.View delay= {300} animation="fadeInDown" >
-                                    <TouchableOpacity onPress={ () => navigation.navigate("Team", item) } >
-                                        <View style={Styles.card}>
-                                            <Text style={Styles.title}>{ item.name }</Text>
-                                            <Text style={Styles.title}>{ item.Equipe_Members.length } Profs</Text>
-                                        </View>
-                                    </TouchableOpacity>
-                                </Animatable.View>
-                            }
-                        />
-                        <FlatList
-                            data={SearLabo}
-                            renderItem={( {item} ) =>
-                                <Animatable.View delay= {300} animation="fadeInDown" >
-                                    <TouchableOpacity onPress={ () => navigation.navigate("LaboDetails", item) } >
-                                        <View style={Styles.card}>
-                                            <Text style={Styles.title}>{ item.name }</Text>
-                                        </View>
-                                    </TouchableOpacity>
-                                </Animatable.View>
-                            }
-                        />
-                        <FlatList
-                            data={SearUser}
-                            renderItem={( {item} ) =>
-                                <Animatable.View delay= {300} animation="fadeInDown" >
-                                    <TouchableOpacity onPress={ () => navigation.navigate("User", item) } >
-                                        <View style={Styles.card}>
-                                            <Text style={Styles.title}>{ item.nom+' '+item.prenom }</Text>
-                                        </View>
-                                    </TouchableOpacity>
-                                </Animatable.View>
-                            }
-                        />
+                        { !panding3 && SearEquipe.map( (item) => 
+                            <Animatable.View delay= {300} animation="fadeInDown" key={item.id}>
+                                <TouchableOpacity onPress={ () => navigation.navigate("Team", { dataa:item, bol: false}) } >
+                                    <View style={[Styles.card,{backgroundColor: '#f2dac3',}]}>
+                                        <Text style={Styles.title}>{ item.name }</Text>
+                                        {/* <Text style={Styles.title}>{ item.Equipe_Members.length } Profs</Text> */}
+                                    </View>
+                                </TouchableOpacity>
+                            </Animatable.View>
+                        )}
+                        { !panding2 && SearLabo.map( (item) => 
+                            <Animatable.View delay= {300} animation="fadeInDown" key={item.id}>
+                                <TouchableOpacity onPress={ () => navigation.navigate("LaboDetails", { dataa:item, bol: false}) } >
+                                    <View style={[Styles.card,{backgroundColor: '#c8c2bc',}]}>
+                                        <Text style={Styles.title}>{ item.name }</Text>
+                                    </View>
+                                </TouchableOpacity>
+                            </Animatable.View>
+                        )}
+                        { !panding1 && SearUser.map( (item) => 
+                            <Animatable.View delay= {300} animation="fadeInDown" key={item.id}>
+                                <TouchableOpacity onPress={ () => navigation.navigate("User", item) } >
+                                    <View style={[Styles.card,{backgroundColor: '#ffefcf', flexDirection: 'row',}]}>
+                                        <Avatar
+                                            rounded
+                                            size="medium"
+                                            source= { require('../profile1.png')}
+                                            // source= {{uri:item.image}}
+                                            // containerStyle ={{ alignSelf: 'center'}}
+                                        >
+                                        </Avatar>
+                                        <View style={{marginLeft: '3%', alignSelf: 'center'}}><Text style={Styles.title}>{ item.first_name+' '+item.last_name }</Text></View>
+                                    </View>
+                                </TouchableOpacity>
+                            </Animatable.View>
+                        )}
                     </View>
                 </KeyboardAwareScrollView>
-            </ImageBackground>
+            </View>
         </TouchableWithoutFeedback>
     );
 }
@@ -176,11 +193,10 @@ const Styles = StyleSheet.create({
         borderRadius: 7,
         padding: 10,
         flex: 1,
-        justifyContent: 'space-between',
         marginVertical: 5,
-        flexDirection: 'row',
+        ...Elevations[3],
     },
-    title: { fontSize: 19, color: 'coral' },
+    title: { fontSize: 19, color: 'coral', fontFamily: 'Regular403', textAlign: 'center' },
     search: {
         flex: 1,
         padding: 10,
@@ -192,13 +208,18 @@ const Styles = StyleSheet.create({
     imag: { flex: 1, resizeMode: "cover", justifyContent: "center" },
     textInput: { flex: 1, height: 40, paddingLeft: 15, fontSize: 16 },
     SearchSpace: {
-        backgroundColor: '#F6F3EE',
+        backgroundColor: '#fcecdd',
         padding: 4,
-        margin: 35,
-        marginTop: "5%",
+        marginVertical: "4%",
+        marginTop: '13%',
         borderRadius: 25,
-        marginHorizontal: 7,
+        marginHorizontal: "4%",
+        alignContent: 'center',
         flexDirection: 'row',
     }, 
-    icon: { marginHorizontal: 9, marginTop: 6 }
+    icon: { marginHorizontal: 9, marginTop: 6 },
+    body: {
+        flex: 1,
+        backgroundColor: '#ffc288',
+    }
 })

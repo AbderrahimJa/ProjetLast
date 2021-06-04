@@ -11,12 +11,12 @@ import Ch_Labo from '../Profile/Chef_Labo';
 import Ch_Eq from '../Profile/Chef_Equipe';
 import Prof from '../Profile/Prof';
 import Str_Rech from '../Profile/Str_Rech';
-// import Team2 from '../Profile/Team';
 import LaboDetails from "../Profile/LaboDetails";
 import Gestion_Comptes from '../Profile/Gestion_Comptes';
 import User from '../Profile/User';
 import monLabo from '../Profile/monLabo';
 import monEquipe from '../Profile/monEquipe';
+import Mes_Info from '../Profile/Mes_Info';
 import Profile from '../Profile/Profile';
 
 const Stack = createStackNavigator();
@@ -43,7 +43,8 @@ function StackHome(){
 function StackAdmin(){
   return (
     <Stack.Navigator screenOptions={{headerShown: false}}>
-      <Stack.Screen name="admin" component={Admin} />
+      <Stack.Screen name="ADMIN" component={Admin} />
+      <Stack.Screen name="profilee" component={Mes_Info} />
       <Stack.Screen name="profile" component={Profile} />
       <Stack.Screen name="str_Rech" component={Str_Rech} />
       <Stack.Screen name="Team" component={Team} />
@@ -57,7 +58,7 @@ function StackAdmin(){
 function StackCh_Labo(){
   return (
     <Stack.Navigator screenOptions={{headerShown: false}}>
-      <Stack.Screen name="ch_Labo" component={Ch_Labo} />
+      <Stack.Screen name="C_LAB" component={Ch_Labo} />
       <Stack.Screen name="profile" component={Profile} />
       <Stack.Screen name="monLabo" component={monLabo} />
       <Stack.Screen name="Team" component={Team} />
@@ -71,7 +72,7 @@ function StackCh_Labo(){
 function StackCh_Eq(){
   return (
     <Stack.Navigator screenOptions={{headerShown: false}}>
-      <Stack.Screen name="ch_Eq" component={Ch_Eq} />
+      <Stack.Screen name="C_EQ" component={Ch_Eq} />
       <Stack.Screen name="profile" component={Profile} />
       <Stack.Screen name="monEquipe" component={monEquipe} />
       <Stack.Screen name="Team" component={Team} />
@@ -84,8 +85,9 @@ function StackCh_Eq(){
 function StackProf(){
   return (
     <Stack.Navigator screenOptions={{headerShown: false}}>
-      <Stack.Screen name="prof" component={Prof} />
-      <Stack.Screen name="profile" component={Profile} />
+      <Stack.Screen name="PROF" component={Prof} />
+      <Stack.Screen name="profile" component={ Profile }/>
+      {/* <Stack.Screen name="profile" component={Profile} /> */}
       {/* <Stack.Screen name="LabDetails" component={Str_Rech} /> */}
       {/* <Stack.Screen name="Team" component={Team} /> */}
       {/* <Stack.Screen name="LaboDetails" component={LaboDetails} /> */}
@@ -93,6 +95,28 @@ function StackProf(){
     </Stack.Navigator>
   );
 };
+
+// const Tab = createMaterialTopTabNavigator();
+
+// function Profile(){
+//   return (
+//       <Tab.Navigator
+//           initialRouteName="Mes infos"
+//           backBehavior="none"
+//           lazy={false}
+//           lazyPlaceholder="Loading..."
+//           // initialLayout={{ width: Dimensions.get('window').width }}
+//           tabBarOptions={{
+//               activeTintColor: '#e91e63',
+//               labelStyle: { fontSize: 12 },
+//               style: { backgroundColor: 'powderblue' },
+//           }}
+//       >
+//         <Tab.Screen name="Mes infos" component={Mes_Info} options={{ tabBarLabel: 'meees Innnfos' }}/>
+//         <Tab.Screen name="Mes articles" component={Mes_Articles} options={{ tabBarLabel: 'Artticles' }}/>
+//       </Tab.Navigator>
+//   );
+// }
 
 const Drawer = createDrawerNavigator();
 
@@ -116,10 +140,11 @@ export default function Navigation(){
                 // drawerContent={props => <DrawerContent {...props} />}
               >
                  <Drawer.Screen name="Home" component={ StackHome } />
-                 <Drawer.Screen name="admin" component={ StackAdmin }/>
-                 <Drawer.Screen name="ch_Labo" component={ StackCh_Labo }/>
-                 <Drawer.Screen name="ch_Eq" component={ StackCh_Eq }/>
-                 <Drawer.Screen name="prof" component={ StackProf }/>
+                 <Drawer.Screen name="ADMIN" component={ StackAdmin }/>
+                 <Drawer.Screen name="C_LAB" component={ StackCh_Labo }/>
+                 <Drawer.Screen name="C_EQ" component={ StackCh_Eq }/>
+                 <Drawer.Screen name="PROF" component={ StackProf }/>
+                 {/* <Drawer.Screen name="profile" component={ Profile }/> */}
              </Drawer.Navigator>
          </NavigationContainer>
      );

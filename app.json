@@ -5,15 +5,26 @@
         "version": "1.0.0",
         "orientation": "portrait",
         "sdkVersion": "41.0.0",
+        "icon": "./assets/LOGO.png",
         "android": {
             "package": "com.takoo.myproject",
             "versionCode": 1,
             "adaptiveIcon": {
-                "foregroundImage": "./assets/logo.png",
+                "foregroundImage": "./assets/LOGO.PNG",
                 "backgroundColor": "#FFFFFF"
             },
             "permissions": [],
-            "icon": "./assets/logo.png"
+            "icon": "./assets/LOGO.png"
+        },
+        "ios": {
+            "bundleIdentifier": "com.yourcompany.yourappname",
+            "buildNumber": "1.0.0",
+            "icon": "./assets/LOGO.png"
+        },
+        "splash": {
+            "image": "./assets/Loading2.png",
+            "backgroundColor": "#FFFFFF",
+            "resizeMode": "contain"
         }
     }
 }
