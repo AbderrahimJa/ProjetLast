@@ -1,4 +1,4 @@
-# Mobile-Application-Of-Research-Laboratory-Using-ReactNative
+# Mobile application of research laboratory using ReactNative
   As we know, each faculty is made up of departments that bring together all the college teachers. The department is headed by a head of department who coordinates scientific and educational activities and communicates with the Deanship.
 
   The Head of Department is also responsible for creating a group of Teams which includes 5 members and Labs which includes 12 members.
