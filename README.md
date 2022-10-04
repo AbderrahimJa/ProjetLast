@@ -1,4 +1,4 @@
-# Mobile application of research laboratory using ReactNative
+# Project Idea
   As we know, each faculty is made up of departments that bring together all the college teachers. The department is headed by a head of department who coordinates scientific and educational activities and communicates with the Deanship.
 
   The Head of Department is also responsible for creating a group of Teams which includes 5 members and Labs which includes 12 members.
@@ -13,6 +13,7 @@
   * We will describe the use of different technologies to address this issue.
   * The idea behind this is to see the limitations/benefits.
 
+# Objective of the project
 The well-designed mobile app can perform actions much faster than a mobile website.
 
 Applications generally store their data locally on mobile devices, unlike websites which generally use web servers. For this reason, data recovery is done quickly in mobile apps.
