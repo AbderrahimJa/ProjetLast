@@ -13,7 +13,7 @@
   * We will describe the use of different technologies to address this issue.
   * The idea behind this is to see the limitations/benefits.
 
-# Objective of the project
+# Why mobile application
 The well-designed mobile app can perform actions much faster than a mobile website.
 
 Applications generally store their data locally on mobile devices, unlike websites which generally use web servers. For this reason, data recovery is done quickly in mobile apps.
