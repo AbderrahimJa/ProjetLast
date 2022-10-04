@@ -12,3 +12,9 @@
   This feature is specifically used on a large screen called "Dashboard" in an admin page, to see new or outgoing members who have been deleted. During this report:
   * We will describe the use of different technologies to address this issue.
   * The idea behind this is to see the limitations/benefits.
+
+The well-designed mobile app can perform actions much faster than a mobile website.
+
+Applications generally store their data locally on mobile devices, unlike websites which generally use web servers. For this reason, data recovery is done quickly in mobile apps.
+
+Apps can still save users time by storing preferences and using them to take proactive action on users' behalf.
